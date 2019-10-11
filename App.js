@@ -50,7 +50,7 @@ function App() {
       setUserScore(userScore + 1);
       setResult('scissors cuts paper, you win!');
     }
-    console.log(choice, compChoice);
+    setChoice('');
   }
 
   return (
