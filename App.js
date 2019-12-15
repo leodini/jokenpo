@@ -4,15 +4,37 @@ import rock from './img/rock.png';
 import paper from './img/paper.png';
 import scissors from './img/scissors.png';
 
+const INITIAL_STATE = {
+  tesoura: 
+    {
+      win: 'papel',
+      lose: 'pedra'
+    }
+  ,
+  pedra: 
+    {
+      win: 'tesoura',
+      lose: 'papel'
+    }
+  ,
+  papel: 
+    {
+      win: 'pedra',
+      lose: 'tesoura'
+    }
+  
+}
+
 function App() {
   const [ userScore, setUserScore ] = useState(0);
   const [ compScore, setCompScore ] = useState(0);
   const [ result, setResult ] = useState('');
-  const [ choice, setChoice ] = useState('');
   const [ compChoice, setCompChoice ] = useState('');
+  const [ choice, setChoice ] = useState(INITIAL_STATE)
 
+  
   const comp = () => {
-    const textArray = ['rock','paper','scissors'];
+    const textArray = ['pedra','papel','tesoura'];
   const randomChoice = textArray[Math.floor(Math.random()*textArray.length)];
   setCompChoice(randomChoice);
   }
@@ -23,35 +45,18 @@ function App() {
 
   const game = () => {
     comp();
-    if(choice === compChoice){
-      setResult(`you both chose ${choice}, its a draw`);
-    } 
-    if(choice === 'rock' && compChoice === 'paper'){
-      setCompScore(compScore + 1);
-      setResult('paper covers rock, you lose!');
+    if(choice.win === compChoice){
+      setUserScore(userScore + 1)
+      setResult(`${choice} ganha de ${compChoice}, parabens`)
+    } else if(choice.lose === compChoice){
+      setCompScore(compScore + 1)
+      setResult(`${choice} perde de ${compChoice}, voce perdeu`)
+    } else{
+      setResult(`${choice} eh igual a ${compChoice}, voces empataram`)
     }
-    if(choice === 'rock' && compChoice === 'scissors'){
-      setUserScore(userScore + 1);
-      setResult('rock beats scissors, you win!');
-    }
-    if(choice === 'paper' && compChoice === 'rock'){
-      setUserScore(userScore + 1);
-      setResult('paper covers rock, you win!');
-    }
-    if(choice === 'paper' && compChoice === 'scissors'){
-      setCompScore(compScore + 1);
-      setResult('scissors cuts paper, you lose!');
-    }
-    if(choice === 'scissors' && compChoice === 'rock'){
-      setCompScore(compScore + 1);
-      setResult('rock beats scissors, you lose!');
-    }
-    if(choice === 'scissors' && compChoice === 'paper'){
-      setUserScore(userScore + 1);
-      setResult('scissors cuts paper, you win!');
-    }
-    setChoice('');
+    setChoice(INITIAL_STATE)
   }
+
 
   return (
     <div className="App">
@@ -68,16 +73,16 @@ function App() {
       </div>
       <div className="choices">
         <div className="choice" id='r'>
-          <img src={rock} alt="rock" onClick={() => {setChoice('rock')}}/>
+          <img src={rock} alt="rock" onClick={() => {setChoice(choice.pedra)}}/>
         
         </div>
         
           <div className="choice" id='p'>
-            <img src={paper} alt="paper" onClick={() => {setChoice('paper')}}/>
+            <img src={paper} alt="paper" onClick={() => {setChoice(choice.papel)}}/>
           </div>
        
           <div className="choice" id='s'>
-            <img src={scissors} alt="scissors" onClick={() => {setChoice('scissors')}}/>
+            <img src={scissors} alt="scissors" onClick={() => {setChoice(choice.tesoura)}}/>
         </div>
       </div>
       <p id="action-message">make your move</p>
@@ -86,3 +91,4 @@ function App() {
 }
 
 export default App;
+
